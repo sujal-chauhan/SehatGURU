@@ -5,7 +5,6 @@ Created on Sat Mar 15 16:20:51 2025
 @author: sujal
 """
 
-import openai
 import pickle 
 import numpy as np
 import streamlit as st
