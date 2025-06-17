@@ -34,7 +34,31 @@ def set_bg(image_url):
 # Set background image using an online source
 set_bg("https://images.unsplash.com/photo-1575278617117-86484b220657?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")
 
-
+# Force consistent text color regardless of light/dark mode
+st.markdown(
+    """
+    <style>
+    .stApp {
+        color: white !important;
+    }
+    .css-1d391kg, .css-1v3fvcr, .css-qbe2hs, .css-10trblm, .css-16huue1 {
+        color: white !important;
+    }
+    label, .stTextInput > div > div > input, .stNumberInput > div > div > input, .stSelectbox > div > div > div, .stButton > button {
+        color: white !important;
+    }
+    .stButton > button {
+        background-color: #4CAF50;
+        color: white !important;
+        border: none;
+    }
+    .css-1v3fvcr {
+        color: white !important;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 
 #loading saved models
 
