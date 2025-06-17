@@ -38,21 +38,29 @@ set_bg("https://images.unsplash.com/photo-1575278617117-86484b220657?q=80&w=1740
 st.markdown(
     """
     <style>
-    .stApp {
+    /* Force text color globally */
+    .stApp, .stApp * {
         color: white !important;
     }
-    .css-1d391kg, .css-1v3fvcr, .css-qbe2hs, .css-10trblm, .css-16huue1 {
+
+    /* Force sidebar text and option menu */
+    .css-1d391kg, .css-10trblm, .css-16idsys, .css-1v3fvcr, .css-1kyxreq, .css-1dp5vir {
         color: white !important;
     }
-    label, .stTextInput > div > div > input, .stNumberInput > div > div > input, .stSelectbox > div > div > div, .stButton > button {
+
+    /* Input box text */
+    input, textarea {
+        color: white !important;
+        background-color: rgba(0, 0, 0, 0.5) !important;
+    }
+
+    /* Buttons */
+    .stButton>button {
         color: white !important;
     }
-    .stButton > button {
-        background-color: #4CAF50;
-        color: white !important;
-        border: none;
-    }
-    .css-1v3fvcr {
+
+    /* Dropdowns / select boxes */
+    .css-1wa3eu0-placeholder, .css-1uccc91-singleValue {
         color: white !important;
     }
     </style>
