@@ -306,7 +306,7 @@ if selected == 'Home':
 
     <div class="contact">
         📧 Email: <a href="https://mail.google.com/mail/?view=cm&fs=1&to=sujalchauhan889@gmail.com" target="_blank" rel="noopener noreferrer">sujalchauhan889@gmail.com</a><br>
-        🔗 LinkedIn: <a href="https://www.linkedin.com/in/sujalchauhan0183/" target="_blank">Sujal Chauhan</a><br>
+        🔗 LinkedIn: <a href="https://www.linkedin.com/in/sujalchauhan08/" target="_blank">Sujal Chauhan</a><br>
         📞 Phone: <span style="color:#1a73e8;">+91 98052 33183</span>
     </div>
     """, unsafe_allow_html=True)
@@ -320,30 +320,30 @@ if selected == 'Home':
     
     
     
-#diabetes prediction page
-if(selected == 'Diabetes Checkup'):
+# Diabetes prediction page
+if selected == 'Diabetes Checkup':
     
-    #page title
+    # Page title
     st.title('Diabetes Risk Assessment')
+    st.markdown("Please enter the following health details to assess your risk of diabetes. Ensure all inputs are numeric and accurate.")
     
-    #getting the input data from user
-    #columns for input fields
+    # Getting input data from user
     col1, col2 = st.columns(2)
     
     with col1:
-        gender = st.text_input("Gender of the person:0-F|1-M")
+        gender = st.text_input("Gender of the person: 0-F | 1-M")
     
     with col2:
         age = st.text_input("Age of the patient")
     
     with col1:
-        hypertension = st.text_input("Do patient have hypertension? 0-No|1-Yes")
+        hypertension = st.text_input("Do patient have hypertension? 0-No | 1-Yes")
     
     with col2:
-        heart_disease = st.text_input("Do patient have any heart disease? 0-No|1-Yes")
+        heart_disease = st.text_input("Do patient have any heart disease? 0-No | 1-Yes")
         
     with col1:
-        smoking_history = st.text_input("Smoking history:0-NoInfo|1-current|2-ever|3-former|4-never|5-notCurrent")
+        smoking_history = st.text_input("Smoking history: 0-NoInfo | 1-current | 2-ever | 3-former | 4-never | 5-notCurrent")
         
     with col2:
         bmi = st.text_input("BMI value")
@@ -353,51 +353,53 @@ if(selected == 'Diabetes Checkup'):
         
     with col2:
         blood_glucose_level = st.text_input("Blood glucose level")
-
     
-    
-    
-    #code for prediction
     diab_diagnosis = ''
     
-    #creating button for predicton
-
     if st.button('Diabetes Test Result'):
+        try:
+            # Convert inputs safely
+            gender = int(gender)
+            age = int(age)
+            hypertension = int(hypertension)
+            heart_disease = int(heart_disease)
+            smoking_history = int(smoking_history)
+            bmi = float(bmi)
+            HbA1c_level = float(HbA1c_level)
+            blood_glucose_level = int(blood_glucose_level)
+
+            user_input = np.array([[gender, age, hypertension, heart_disease,
+                                    smoking_history, bmi, HbA1c_level, blood_glucose_level]])
+
+            # Apply feature scaling
+            user_input_scaled = diabetes_scaler.transform(user_input)
+
+            # Make prediction
+            diab_prediction = diabetes_model.predict(user_input_scaled)
+
+            if diab_prediction[0] == 1:
+                diab_diagnosis = 'Our analysis indicates that the person is at risk of diabetes.'
+            else:
+                diab_diagnosis = 'Our analysis indicates that the person is not at risk of diabetes.'
+
+        except ValueError:
+            st.error("Invalid input: Please ensure all fields are filled with appropriate numeric values.")
+        except FileNotFoundError:
+            st.error("Prediction service is temporarily unavailable. Required model files are missing.")
+        except Exception:
+            st.error("An unexpected error occurred while processing your request. Please try again later.")
         
-        gender = int(gender)  # Assuming categorical 0 or 1
-        age = int(age)
-        hypertension = int(hypertension)  # Assuming categorical 0 or 1
-        heart_disease = int(heart_disease)  # Assuming categorical 0 or 1
-        smoking_history = int(smoking_history)  # Assuming categorical 0 or 1
-        bmi = float(bmi)
-        HbA1c_level = float(HbA1c_level)
-        blood_glucose_level = int(blood_glucose_level)
-        
-        user_input = np.array([[gender, age, hypertension, heart_disease, smoking_history, bmi, HbA1c_level, blood_glucose_level]])
-
-        # Apply feature scaling using the same scaler used during training
-        user_input_scaled = diabetes_scaler.transform(user_input)
-
-        # Make prediction
-        diab_prediction = diabetes_model.predict(user_input_scaled)
-        
-        print("Model Prediction Output:", diab_prediction)  # Debugging line
-
-
-        if (diab_prediction[0] == 1):
-            diab_diagnosis = 'The person is Diabetic'
-        else:
-            diab_diagnosis = 'The person is not Diabetic'
-    st.success(diab_diagnosis)
+    if diab_diagnosis:
+        st.success(diab_diagnosis)   
     
     
     
+# Heart disease prediction page
+if selected == 'Cardiac Checkup':
     
-#heart disease prediction page
-if(selected == 'Cardiac Checkup'):
-    
-    #page title
+    # Page title
     st.title('Heart Disease Risk Assessment')
+    st.markdown("Please enter the required health indicators to assess heart disease risk. All values should be numeric.")
     
     col1, col2 = st.columns(2)
     
@@ -405,27 +407,21 @@ if(selected == 'Cardiac Checkup'):
         age = st.text_input("Age of the patient")
         
     with col2:
-        sex = st.text_input("Gender of the person:0-F|1-M")
+        sex = st.text_input("Gender of the person: 0 - Female | 1 - Male")
         
-    
-        
-    cp = st.text_input("Chest pain type (0: Typical Angina, 1: Atypical Angina, 2: Non-anginal pain, 3: Asymptomatic)")
+    cp = st.text_input("Chest pain type: 0 - Typical Angina | 1 - Atypical Angina | 2 - Non-anginal pain | 3 - Asymptomatic")
     
     col3, col4 = st.columns(2)
     
     with col3:
-        trestbps = st.text_input("Resting blood pressure (in mm Hg)")
+        trestbps = st.text_input("Resting blood pressure (mm Hg)")
         
     with col4:
-        chol = st.text_input("Serum cholesterol (in mg/dL)")
-        
+        chol = st.text_input("Serum cholesterol (mg/dL)")
     
-    fbs = st.text_input("Fasting blood sugar (>120 mg/dL, 1 = True, 0 = False)")
-        
-        
+    fbs = st.text_input("Fasting blood sugar > 120 mg/dL: 1 - Yes | 0 - No")
     
-
-    restecg = st.text_input("Resting electrocardiographic results (0 = Normal, 1 = ST-T wave abnormality, 2 = Left ventricular hypertrophy)")
+    restecg = st.text_input("Resting ECG results: 0 - Normal | 1 - ST-T abnormality | 2 - LV hypertrophy")
     
     col6, col7 = st.columns(2)    
     
@@ -433,177 +429,179 @@ if(selected == 'Cardiac Checkup'):
         thalachh = st.text_input("Maximum heart rate achieved")
     
     with col7:
-        exang = st.text_input("Chest pain during exercise (1 = Yes, 0 = No)")
+        exang = st.text_input("Exercise-induced angina: 1 - Yes | 0 - No")
         
-    oldpeak = st.text_input("ST depression level during exercise (relative to rest)?")
+    oldpeak = st.text_input("ST depression induced by exercise relative to rest")
         
-    
-    slope = st.text_input("Slope of the peak exercise ST segment (0: Upsloping, 1: Flat, 2: Downsloping)")
+    slope = st.text_input("Slope of the peak exercise ST segment: 0 - Upsloping | 1 - Flat | 2 - Downsloping")
         
     ca = st.text_input("Number of major vessels colored by fluoroscopy (0–3)")
         
-    thal = st.text_input("Thalassemia (1 = Normal, 2 = Fixed Defect, 3 = Reversible Defect)")  
+    thal = st.text_input("Thalassemia: 1 - Normal | 2 - Fixed defect | 3 - Reversible defect")  
     
     heart_diagnosis = ''
     
-    #creating button for prediction
     if st.button('Heart Disease Test Result'):
-    
-        # Convert inputs to appropriate data types
-        age = int(age)
-        sex = int(sex)  # 0 = Female, 1 = Male
-        cp = int(cp)  # Chest Pain Type
-        trestbps = int(trestbps)  # Resting Blood Pressure
-        chol = int(chol)  # Serum Cholesterol
-        fbs = int(fbs)  # Fasting Blood Sugar (0 or 1)
-        restecg = int(restecg)  # Resting ECG results
-        thalachh = int(thalachh)  # Maximum Heart Rate Achieved
-        exang = int(exang)  # Exercise-Induced Angina (0 or 1)
-        oldpeak = float(oldpeak)  # ST Depression
-        slope = int(slope)  # Slope of ST segment
-        ca = int(ca)  # Major vessels colored by fluoroscopy (0–3)
-        thal = int(thal)  # Thalassemia (1 = Normal, 2 = Fixed Defect, 3 = Reversible Defect)
-    
-        # Create input array
-        user_input = np.array([[age, sex, cp, trestbps, chol, fbs, restecg, thalachh, exang, oldpeak, slope, ca, thal]])
-    
-        # Apply feature scaling using the same scaler used during training
-        user_input_scaled = heart_scaler.transform(user_input)
-    
-        # Make prediction
-        heart_prediction = heart_disease_model.predict(user_input_scaled)
-        
-        print("Model Prediction Output:", heart_prediction)  # Debugging line
-    
-        # Display result
-        if heart_prediction[0] == 1:
-            heart_diagnosis = 'The person is at risk of Heart Disease'
-        else:
-            heart_diagnosis = 'The person is not at risk of Heart Disease'
-    st.success(heart_diagnosis)
+        try:
+            # Safely convert input types
+            age = int(age)
+            sex = int(sex)
+            cp = int(cp)
+            trestbps = int(trestbps)
+            chol = int(chol)
+            fbs = int(fbs)
+            restecg = int(restecg)
+            thalachh = int(thalachh)
+            exang = int(exang)
+            oldpeak = float(oldpeak)
+            slope = int(slope)
+            ca = int(ca)
+            thal = int(thal)
+
+            # Create input array
+            user_input = np.array([[age, sex, cp, trestbps, chol, fbs, restecg,
+                                    thalachh, exang, oldpeak, slope, ca, thal]])
+
+            # Apply scaling
+            user_input_scaled = heart_scaler.transform(user_input)
+
+            # Make prediction
+            heart_prediction = heart_disease_model.predict(user_input_scaled)
+
+            if heart_prediction[0] == 1:
+                heart_diagnosis = 'Our analysis indicates that the person may be at risk of heart disease.'
+            else:
+                heart_diagnosis = 'Our analysis indicates that the person is not at risk of heart disease.'
+
+        except ValueError:
+            st.error("Invalid input: Please enter valid numeric values for all fields.")
+        except FileNotFoundError:
+            st.error("Prediction service is temporarily unavailable. Model files are missing.")
+        except Exception:
+            st.error("An unexpected error occurred while processing your request. Please try again later.")
+
+    if heart_diagnosis:
+        st.success(heart_diagnosis)
     
     
 
 
 
-#parkinsons prediction page
-if(selected == 'Parkinsons Checkup'):
+# Parkinson's prediction page
+if selected == 'Parkinsons Checkup':
     
-    
-    #page title
-    st.title('Parkinsons Risk Assessment ')
+    # Page title
+    st.title('Parkinson’s Risk Assessment')
+    st.markdown("Kindly fill in the details below for an accurate Parkinson’s risk prediction. Use numeric values where applicable.")
     
     col1, col2 = st.columns(2)
     
     with col1:
         age = st.text_input("Age of the person")
     with col2:
-        sex = st.text_input("Gender of the person: 0-F | 1-M")
+        sex = st.text_input("Gender of the person: 0 - Female | 1 - Male")
     with col1:
-        test_time = st.text_input("Time duration since the first test (in seconds)")
+        test_time = st.text_input("Time since first test (seconds)")
     with col2:
-        jitter_perc = st.text_input("Jitter(%) : Frequency variation (instability in voice)")
+        jitter_perc = st.text_input("Jitter (%) - Frequency variation (voice instability)")
     
-    jitter_abs = st.text_input("Jitter(Abs) : Absolute jitter in voice frequency")
-    
-    jitter_rap = st.text_input("Jitter(RAP) : Relative average perturbation in voice frequency")
-
-    jitter_ppq5 = st.text_input("Jitter(PPQ5) : Five-point period perturbation quotient (variation in voice pitch)")
-
-    jitter_ddp = st.text_input("Jitter(DDP) : Average absolute difference of differences between jitter cycles")
+    jitter_abs = st.text_input("Jitter (Abs) - Absolute jitter in voice frequency")
+    jitter_rap = st.text_input("Jitter (RAP) - Relative average perturbation")
+    jitter_ppq5 = st.text_input("Jitter (PPQ5) - Five-point period perturbation quotient")
+    jitter_ddp = st.text_input("Jitter (DDP) - Difference of differences between cycles")
     
     col3, col4 = st.columns(2)
     with col3:
-        shimmer = st.text_input("Shimmer : Amplitude variation (instability in voice volume)")
+        shimmer = st.text_input("Shimmer - Amplitude variation")
     with col4:
-        shimmer_db = st.text_input("Shimmer (dB) : Logarithmic shimmer in decibels")
-
-    shimmer_apq3 = st.text_input("Shimmer: APQ3 : Amplitude perturbation quotient (3-point window)")
-
-    shimmer_apq5 = st.text_input("Shimmer: APQ5 : Amplitude perturbation quotient (5-point window)	")
-
-    shimmer_apq11 = st.text_input("Shimmer: APQ11 : Amplitude perturbation quotient (11-point window)")
-
-    shimmer_dda = st.text_input("Shimmer: DDA : Average absolute difference of amplitude perturbation cycles")
+        shimmer_db = st.text_input("Shimmer (dB) - Log shimmer in decibels")
+    
+    shimmer_apq3 = st.text_input("Shimmer (APQ3) - Amplitude perturbation quotient (3-point)")
+    shimmer_apq5 = st.text_input("Shimmer (APQ5) - Amplitude perturbation quotient (5-point)")
+    shimmer_apq11 = st.text_input("Shimmer (APQ11) - Amplitude perturbation quotient (11-point)")
+    shimmer_dda = st.text_input("Shimmer (DDA) - Avg absolute diff amplitude perturbation")
     
     col5, col6 = st.columns(2)
     with col5:
-        nhr = st.text_input("NHR (Noise-to-Harmonics Ratio)")
+        nhr = st.text_input("NHR - Noise-to-Harmonics Ratio")
     with col6:
-        hnr = st.text_input("HNR (Harmonics-to-Noise Ratio)")
+        hnr = st.text_input("HNR - Harmonics-to-Noise Ratio")
     with col5:
-        rpde = st.text_input("RPDE (Recurrence Period Density Entropy)")
+        rpde = st.text_input("RPDE - Recurrence period density entropy")
     with col6:
-        dfa = st.text_input("DFA (Detrended Fluctuation Analysis)")
+        dfa = st.text_input("DFA - Detrended fluctuation analysis")
     
-    ppe = st.text_input("PPE (Pitch Period Entropy)")
+    ppe = st.text_input("PPE - Pitch period entropy")
     
     parkinsons_diagnosis = ''
     
-    # Creating button for prediction
     if st.button('Parkinson’s Test Result'):
-        
-        # Convert inputs to appropriate data types
-        age = int(age)
-        sex = int(sex)  # 0 = Female, 1 = Male
-        test_time = float(test_time)
-        jitter_perc = float(jitter_perc)
-        jitter_abs = float(jitter_abs)
-        jitter_rap = float(jitter_rap)
-        jitter_ppq5 = float(jitter_ppq5)
-        jitter_ddp = float(jitter_ddp)
-        shimmer = float(shimmer)
-        shimmer_db = float(shimmer_db)
-        shimmer_apq3 = float(shimmer_apq3)
-        shimmer_apq5 = float(shimmer_apq5)
-        shimmer_apq11 = float(shimmer_apq11)
-        shimmer_dda = float(shimmer_dda)
-        nhr = float(nhr)
-        hnr = float(hnr)
-        rpde = float(rpde)
-        dfa = float(dfa)
-        ppe = float(ppe)
-    
-        # Create input tuple
-        input_data = (age, sex, test_time, jitter_perc, jitter_abs, jitter_rap, jitter_ppq5,
-                      jitter_ddp, shimmer, shimmer_db, shimmer_apq3, shimmer_apq5, shimmer_apq11,
-                      shimmer_dda, nhr, hnr, rpde, dfa, ppe)
-    
-        # Make prediction
-        parkinsons_prediction = parkinsons_model.predict([input_data])
-    
-        print("Model Prediction Output:", parkinsons_prediction)  # Debugging line
-    
-        # Display result
-        if parkinsons_prediction[0] == 1:
-            parkinsons_diagnosis = 'The person has Parkinson’s Disease'
-        else:
-            parkinsons_diagnosis = 'The person does NOT have Parkinson’s Disease'
-    
-    st.success(parkinsons_diagnosis)
+        try:
+            # Safely convert input types
+            age = int(age)
+            sex = int(sex)
+            test_time = float(test_time)
+            jitter_perc = float(jitter_perc)
+            jitter_abs = float(jitter_abs)
+            jitter_rap = float(jitter_rap)
+            jitter_ppq5 = float(jitter_ppq5)
+            jitter_ddp = float(jitter_ddp)
+            shimmer = float(shimmer)
+            shimmer_db = float(shimmer_db)
+            shimmer_apq3 = float(shimmer_apq3)
+            shimmer_apq5 = float(shimmer_apq5)
+            shimmer_apq11 = float(shimmer_apq11)
+            shimmer_dda = float(shimmer_dda)
+            nhr = float(nhr)
+            hnr = float(hnr)
+            rpde = float(rpde)
+            dfa = float(dfa)
+            ppe = float(ppe)
+
+            input_data = (age, sex, test_time, jitter_perc, jitter_abs, jitter_rap, jitter_ppq5,
+                          jitter_ddp, shimmer, shimmer_db, shimmer_apq3, shimmer_apq5, shimmer_apq11,
+                          shimmer_dda, nhr, hnr, rpde, dfa, ppe)
+
+            # Predict
+            parkinsons_prediction = parkinsons_model.predict([input_data])
+
+            if parkinsons_prediction[0] == 1:
+                parkinsons_diagnosis = 'Our analysis indicates that the person may have Parkinson’s Disease.'
+            else:
+                parkinsons_diagnosis = 'Our analysis indicates that the person is unlikely to have Parkinson’s Disease.'
+
+        except ValueError:
+            st.error("Invalid input: Please ensure all fields are filled with valid numeric values.")
+        except FileNotFoundError:
+            st.error("Prediction service unavailable: Model files are missing. Please try again later.")
+        except Exception:
+            st.error("An unexpected error occurred while processing the request. Kindly try again later.")
+
+    if parkinsons_diagnosis:
+        st.success(parkinsons_diagnosis)
     
 
    
         
         
 
-#breast cancer prediction page
-# breast cancer prediction page
+
+# Breast cancer prediction page
 if selected == 'Breast Cancer Checkup':
     
-    # page title
+    # Page title
     st.title('Breast Cancer Risk Assessment')
+    st.markdown("Please provide the following measurements to assess your risk. Ensure all values are numeric and accurate.")
     
     col1, col2 = st.columns(2)
     
-        
     with col1:
-        radius_mean = st.text_input('Radius Mean : Avg. radius of cell')
+        radius_mean = st.text_input('Radius Mean: Avg. radius of cell')
         texture_mean = st.text_input('Texture Mean: Variation in pixel intensity')
         perimeter_mean = st.text_input('Perimeter Mean: Avg. cell boundary length')
         area_mean = st.text_input('Area Mean: Avg. size of the cell')
         smoothness_mean = st.text_input('Smoothness Mean: Edge smoothness')
-        compactness_mean = st.text_input('Compactness Mean: Perimeter sq/area')
+        compactness_mean = st.text_input('Compactness Mean: Perimeter² / area')
         concavity_mean = st.text_input('Concavity Mean: Depth of inward curves')
         concave_points_mean = st.text_input('Concave Points Mean: Count of inward curves')
         symmetry_mean = st.text_input('Symmetry Mean: Shape symmetry')
@@ -633,31 +631,40 @@ if selected == 'Breast Cancer Checkup':
     fractal_dimension_worst = st.text_input('Fractal Dimension Worst: Max complexity')
     
     cancer_diagnosis = ''
-        
+    
     if st.button('Breast Cancer Test Result'):
-        # Convert inputs to float and create input array
-        input_data = np.array([
-            float(radius_mean), float(texture_mean), float(perimeter_mean), float(area_mean), float(smoothness_mean),
-            float(compactness_mean), float(concavity_mean), float(concave_points_mean), float(symmetry_mean), float(fractal_dimension_mean),
-            float(radius_se), float(texture_se), float(perimeter_se), float(area_se), float(smoothness_se),
-            float(compactness_se), float(concavity_se), float(concave_points_se), float(symmetry_se), float(fractal_dimension_se),
-            float(radius_worst), float(texture_worst), float(perimeter_worst), float(area_worst), float(smoothness_worst),
-            float(compactness_worst), float(concavity_worst), float(concave_points_worst), float(symmetry_worst),
-            float(fractal_dimension_worst)
-        ]).reshape(1, -1)
+        try:
+            # Convert inputs to float
+            input_data = np.array([
+                float(radius_mean), float(texture_mean), float(perimeter_mean), float(area_mean), float(smoothness_mean),
+                float(compactness_mean), float(concavity_mean), float(concave_points_mean), float(symmetry_mean), float(fractal_dimension_mean),
+                float(radius_se), float(texture_se), float(perimeter_se), float(area_se), float(smoothness_se),
+                float(compactness_se), float(concavity_se), float(concave_points_se), float(symmetry_se), float(fractal_dimension_se),
+                float(radius_worst), float(texture_worst), float(perimeter_worst), float(area_worst), float(smoothness_worst),
+                float(compactness_worst), float(concavity_worst), float(concave_points_worst), float(symmetry_worst),
+                float(fractal_dimension_worst)
+            ]).reshape(1, -1)
 
-        # Scale the input
-        input_data_scaled = breast_cancer_scaler.transform(input_data)
+            # Scale the input
+            input_data_scaled = breast_cancer_scaler.transform(input_data)
 
-        # Predict
-        prediction = breast_cancer_model.predict(input_data_scaled)
+            # Make prediction
+            prediction = breast_cancer_model.predict(input_data_scaled)
 
-        if prediction[0] == 1:
-            cancer_diagnosis = 'The person has Breast Cancer'
-        else:
-            cancer_diagnosis = 'The person does NOT have Breast Cancer'
+            if prediction[0] == 1:
+                cancer_diagnosis = 'Our analysis indicates that the person may have Breast Cancer.'
+            else:
+                cancer_diagnosis = 'Our analysis indicates that the person is unlikely to have Breast Cancer.'
 
-    st.success(cancer_diagnosis)
+        except ValueError:
+            st.error("Invalid input: Please ensure all fields are filled with valid numeric values.")
+        except FileNotFoundError:
+            st.error("Prediction service unavailable: Model files are missing. Please try again later.")
+        except Exception:
+            st.error("An unexpected error occurred while processing the request. Kindly try again later.")
+
+    if cancer_diagnosis:
+        st.success(cancer_diagnosis)
         
         
     
