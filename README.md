@@ -94,12 +94,19 @@ SehatGURU/
 ## 📸 Screenshots
 
 🏠 App Homepage  
-<p align="center">
-  <img src="./doctor.jpg" alt="Homepage Preview" width="800"/>
-</p>
+<p align="center"> <img src="./screenshots/homePage.png" alt="Homepage" width="800"/> </p>
 
-*(Add more screenshots later in a `screenshots/` folder for detailed views)*  
+ℹ️ About SehatGURU
+<p align="center"> <img src="./screenshots/aboutSehatGURU.png" alt="About Page" width="800"/> </p>
 
+⚙️ How It Works
+<p align="center"> <img src="./screenshots/howItWorks.png" alt="How It Works" width="800"/> </p>
+
+📱 Mobile View
+<p align="center"> <img src="./screenshots/mobileView.png" alt="Mobile View" width="400"/> </p>
+
+🧭 Sidebar Navigation
+<p align="center"> <img src="./screenshots/sideBar.png" alt="Sidebar" width="800"/> </p>
 ---
 
 ## 🙏 Acknowledgments
