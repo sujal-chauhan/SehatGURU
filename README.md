@@ -107,6 +107,7 @@ SehatGURU/
 
 🧭 Sidebar Navigation
 <p align="center"> <img src="./screenshots/sideBar.png" alt="Sidebar" width="800"/> </p>
+
 ---
 
 ## 🙏 Acknowledgments
